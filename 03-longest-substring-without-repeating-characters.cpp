@@ -12,16 +12,18 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         int result = 0;
+        int begin_ptr = 0;
+        int end_ptr = 0;
         set<char> str_set;
-        for (char c : s){
-            int old_size;
-            old_size = str_set.size();
-            str_set.insert(c);
-            if (str_set.size() > result)
-                result = str_set.size();
-            if (str_set.size() == old_size){
-                str_set.clear();
-                str_set.insert(c);
+
+        while(end_ptr < s.size()){
+            if(str_set.count(s[end_ptr]) == 0){
+                str_set.insert(s[end_ptr]);
+                result = max(int(str_set.size()), result);
+                end_ptr++;
+            } else{
+                str_set.erase(s[begin_ptr]);
+                begin_ptr++;
             }
         }
         return result;
@@ -29,7 +31,8 @@ public:
 };
 
 int main(){
-    string str = "aab";
+    string str = "aabccabc";
+
     Solution s;
     auto result = s.lengthOfLongestSubstring(str);
     cout << result << endl;
